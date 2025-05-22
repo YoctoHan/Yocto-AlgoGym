@@ -1,60 +1,49 @@
-//
-// Created by YoctoHan on 25-5-22.
-//
-
 #ifndef TEST_REGISTRY_H
 #define TEST_REGISTRY_H
 
 #pragma once
 #include <functional>
-#include <iostream>
 #include <map>
 #include <string>
 
-// 测试函数类型
-using TestFunction = std::function<int()>;
-
-// 测试注册表单例
 class TestRegistry {
 public:
-    static TestRegistry &getInstance() {
+    static TestRegistry& getInstance() {
         static TestRegistry instance;
         return instance;
     }
 
-    // 注册测试
-    void registerTest(const std::string &name, TestFunction func) { tests_[name] = func; }
-
-    // 运行测试
-    int runTest(const std::string &name) {
-        auto it = tests_.find(name);
-        if (it == tests_.end()) {
-            std::cerr << "Test '" << name << "' not found!" << std::endl;
-            return 1;
-        }
-
-        std::cout << "Running test: " << name << std::endl;
-        return it->second();
+    void registerTest(const std::string& name, std::function<int(int, char**)> testFunc) {
+        tests[name] = testFunc;
     }
 
-    // 列出所有可用测试
-    void listTests() {
-        std::cout << "Available tests:" << std::endl;
-        for (const auto &test: tests_) {
-            std::cout << "  " << test.first << std::endl;
+    int runTest(const std::string& name, int argc, char* argv[]) {
+        if (tests.find(name) != tests.end()) {
+            return tests[name](argc, argv);
         }
+        return -1; // 测试不存在
+    }
+
+    int runAllTests(int argc, char* argv[]) {
+        int result = 0;
+        for (const auto& test : tests) {
+            result |= test.second(argc, argv);
+        }
+        return result;
+    }
+
+    bool hasTest(const std::string& name) {
+        return tests.find(name) != tests.end();
     }
 
 private:
-    TestRegistry() = default;
-    std::map<std::string, TestFunction> tests_;
+    std::map<std::string, std::function<int(int, char**)>> tests;
 };
 
-// 测试注册辅助宏
-#define REGISTER_TEST(name, func)                                                                                      \
-    static bool registered_##name = []() {                                                                             \
-        TestRegistry::getInstance().registerTest(#name, func);                                                         \
-        return true;                                                                                                   \
-    }();
+#define REGISTER_TEST(name, func) \
+static bool registered_##name = [] { \
+TestRegistry::getInstance().registerTest(#name, func); \
+return true; \
+}();
 
 #endif // TEST_REGISTRY_H

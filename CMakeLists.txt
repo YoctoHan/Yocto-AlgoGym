@@ -9,7 +9,7 @@ include_directories(include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/googletest/include)
 
 # 查找所有测试文件
-file(GLOB TEST_SOURCES tests/*.cpp)
+file(GLOB TEST_SOURCES tests/*/*/*.cpp)
 
 add_executable(Yocto_AlgoGym
         include/test_registry.h

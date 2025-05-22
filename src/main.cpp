@@ -1,23 +1,20 @@
-//
-// Created by YoctoHan on 25-5-22.
-//
-
-#include <iostream>
 #include "test_registry.h"
+#include <iostream>
+#include <string>
 
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <test_name>" << std::endl;
-        std::cerr << "       " << argv[0] << " list    # to list all tests" << std::endl;
-        return 1;
+int main(int argc, char* argv[]) {
+    // 如果指定了测试名称，只运行该测试
+    if (argc > 1) {
+        std::string testName = argv[1];
+        if (TestRegistry::getInstance().hasTest(testName)) {
+            // 传递剩余的命令行参数给测试函数
+            return TestRegistry::getInstance().runTest(testName, argc - 1, argv + 1);
+        } else {
+            std::cout << "Test '" << testName << "' not found.\n";
+            return -1;
+        }
     }
 
-    std::string arg = argv[1];
-
-    if (arg == "list") {
-        TestRegistry::getInstance().listTests();
-        return 0;
-    }
-
-    return TestRegistry::getInstance().runTest(arg);
+    // 否则运行所有测试
+    return TestRegistry::getInstance().runAllTests(argc, argv);
 }
