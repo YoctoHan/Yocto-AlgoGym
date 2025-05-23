@@ -17,17 +17,19 @@ AlgoGym is a self-developed algorithm training project designed to systematicall
 * Project Structure
 ```livecodeserver
 AlgoGym/
-├── include/            # Public headers
-├── src/                # Main source code
-├── tests/              # Test cases
-│   ├── array/          # Array algorithm tests
-│   ├── string/         # String algorithm tests
-│   ├── dp/             # Dynamic programming tests
+├── include/                                   # Public headers
+├── src/                                       # Main source code
+├── tests/                                     # Test cases
+│   ├── twoPointers/                           # Two pointers algorithm tests
+│   │      └──isPalindrome                     # Problem name
+│   │               ├──isPalindrome.md         # Problem description
+│   │               └──isPalindrome.cpp        # Problem solution and tests
+│   ├── dynamicProgramming/                    # Dynamic programming tests
 │   └── ...
-├── tools/              # Helper scripts
-├── .clang-format       # Code formatting configuration
-├── CMakeLists.txt      # CMake configuration
-└── README.md           # Project documentation
+├── tools/                                     # Helper scripts
+├── .clang-format                              # Code formatting configuration
+├── CMakeLists.txt                             # CMake configuration
+└── README.md                                  # Project documentation
 ```
 ## Usage
 1. Adding a New Problem: Create a new test file in the appropriate category under tests/
@@ -37,7 +39,8 @@ AlgoGym/
 mkdir -p build && cd build
 cmake ..
 make
-./run_tests
+./Yocto_AlgoGym list                           # List all the available tests
+./Yocto_AlgoGym isPalindrome                   # Run teses of problem isPalindrome
 ```
 4. Optimizing Solutions: Improve algorithms based on test results and performance analysis
 ## Learning Value
