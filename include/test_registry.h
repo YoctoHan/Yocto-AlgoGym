@@ -5,6 +5,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <vector>
 
 class TestRegistry {
 public:
@@ -34,6 +35,15 @@ public:
 
     bool hasTest(const std::string& name) {
         return tests.find(name) != tests.end();
+    }
+
+    // 新增方法：获取所有测试名称
+    std::vector<std::string> getTestNames() const {
+        std::vector<std::string> names;
+        for (const auto& test : tests) {
+            names.push_back(test.first);
+        }
+        return names;
     }
 
 private:
