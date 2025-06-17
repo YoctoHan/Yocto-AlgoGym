@@ -15,6 +15,7 @@ add_executable(Yocto_AlgoGym
         include/test_registry.h
         src/main.cpp
         ${TEST_SOURCES}
+        tests/slidingWindow/findAnagrams/findAnagrams.cpp
 )
 
 # 链接GoogleTest库
